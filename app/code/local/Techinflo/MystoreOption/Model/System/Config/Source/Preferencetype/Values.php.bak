@@ -1,0 +1,18 @@
+<?php
+
+class Techinflo_Overlay_Model_System_Config_Source_Overlaysize_Values
+{
+    public function toOptionArray()
+    {
+        return array(
+            array(
+                'value' => 'Male/Female Type',
+                'label' => 'Male/Female Type',
+            ),
+            array(
+                'value' => 'Category List Type',
+                'label' => 'Category List Type',
+            ),
+        );
+    }
+}

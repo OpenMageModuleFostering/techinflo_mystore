@@ -1,0 +1,1 @@
+<?phpclass Techinflo_Mystore_Block_Customer extends Mage_Customer_Block_Account_Dashboard  {}

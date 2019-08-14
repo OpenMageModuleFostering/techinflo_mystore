@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Techinflo_MyStoreWidget>
+      <active>true</active>
+      <codePool>local</codePool>            
+	        <depends>
+                <Mage_Cms />
+            </depends>
+      <version>1.0.0</version>
+    </Techinflo_MyStoreWidget>
+  </modules>
+</config>

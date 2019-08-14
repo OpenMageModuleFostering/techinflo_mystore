@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Techinflo_Mystore>
+		  <version>1.0.0</version>
+		</Techinflo_Mystore>
+	</modules>
+	
+	<global>
+		<resources>
+			<techinflo_mystore_setup>
+				<setup>
+					<module>Techinflo_Mystore</module>
+					<class>Techinflo_Mystore_Model_Resource_Setup</class>
+				</setup>
+			</techinflo_mystore_setup>
+		</resources>
+		<blocks> <!--Block folder-->
+			<techinflo>
+				<class>Techinflo_Mystore_Block</class>
+			</techinflo>
+		</blocks>
+		<helpers>
+			<techinflo>
+				<class>Techinflo_Mystore_Helper</class>
+			</techinflo>
+		</helpers>
+	</global>
+	
+	<frontend>
+		<routers>
+			<techinflo>
+				<use>standard</use>
+				<args>
+					<module>Techinflo_Mystore</module>
+					<frontName>mystore</frontName>
+				</args>
+			</techinflo>
+	  
+			<customer>
+				<args>
+					<modules>
+						<!--name / before: change existing -->
+						<techinflo before="Mage_Customer">Techinflo_Mystore</techinflo>
+					</modules>
+				</args>
+			</customer>
+		</routers>
+	
+		<layout>
+		  <updates>
+			<techinflo>
+                          <!--app\design\frontend\default\default\layout\customer\mystore.xml-->
+			  <file>customer/mystore.xml</file>
+			</techinflo>
+		  </updates>
+		</layout>
+		
+	</frontend>
+</config> 

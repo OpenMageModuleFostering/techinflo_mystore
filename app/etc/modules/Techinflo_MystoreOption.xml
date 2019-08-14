@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Techinflo_MystoreOption>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Techinflo_MystoreOption>
+    </modules>
+</config>

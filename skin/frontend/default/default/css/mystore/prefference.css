@@ -1,0 +1,43 @@
+/*Style Sheet for Mystore Preferences */
+
+#mainform h1 {color: #2F2F2F;
+font: 16px/1.55 Arial,Helvetica,sans-serif;
+padding:2px;
+color: black;
+font-weight: bold;
+}
+ 
+#mainform h4 {
+color: #2F2F2F;
+font: 14px/1.55 Arial,Helvetica,sans-serif;
+padding:2px;
+color: black;
+font-weight: bold;
+}
+
+.odd-row {color: #2F2F2F;
+font: 12px/1.55 Arial,Helvetica,sans-serif;
+padding:8px;
+color: black;
+margin-left:30px;}
+
+.even-row { color: #2F2F2F;
+font: 12px/1.55 Arial,Helvetica,sans-serif;
+padding:8px;
+color: black;
+margin-left:30px;}
+
+.form-submit-button input {
+padding: 3px;
+background: #ffffff;
+border-radius: 5px;
+border:1px solid grey;
+color: #2F2F2F;
+font: 12px/1.55 Arial,Helvetica,sans-serif;
+font-weight:bold;
+margin-top:20px;
+}
+
+#shoow-hide-box {
+margin-left: 25px;
+}

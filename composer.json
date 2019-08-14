@@ -1,0 +1,17 @@
+{
+    "name": "OpenMageModuleFostering/Techinflo_Mystore",
+    "type": "magento-module",
+    "license": "Open-Software-License",
+    "homepage": "",
+    "description": "<p>My STORE extension sorts the products based on user preferences saved,
+user will see only he/his preferred range of products.</p>",
+    "authors": [
+    {
+        "name": "Techinflo",
+        "email": "anil.gupta@techinflo.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
