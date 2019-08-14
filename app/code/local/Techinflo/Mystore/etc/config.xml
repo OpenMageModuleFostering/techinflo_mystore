@@ -50,8 +50,8 @@
 		<layout>
 		  <updates>
 			<techinflo>
-                          <!--app\design\frontend\default\default\layout\customer\mystore.xml-->
-			  <file>customer/mystore.xml</file>
+            <!--app\design\frontend\default\default\layout\customer\mystore.xml-->
+			  <file>techinflo/customer/mystore.xml</file>
 			</techinflo>
 		  </updates>
 		</layout>

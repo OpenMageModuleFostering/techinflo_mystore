@@ -1,0 +1,430 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Create account form template
+ *
+ * @see app/design/frontend/base/default/template/customer/form/register.phtml
+ */
+/** @var $this Mage_Customer_Block_Form_Register */
+
+$value = Mage::getModel('core/cookie')->get('User'); ?>
+<link href="<?php echo $this->getSkinUrl('css/mystore/prefference.css');?>" rel="stylesheet" type="text/css" media="all" />
+<div class="account-create">
+    <div class="page-title">
+        <h1><?php echo $this->__('Create an Account') ?></h1>
+    </div>
+    <?php echo $this->getChildHtml('form_fields_before')?>
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="form-validate">
+        <div class="fieldset">
+            <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
+            <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
+            <h2 class="legend"><?php echo $this->__('Personal Information') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
+                </li>
+                <li>
+                    <label for="email_address" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="email" id="email_address" value="<?php echo $this->escapeHtml($this->getFormData()->getEmail()) ?>" title="<?php echo $this->__('Email Address') ?>" class="input-text validate-email required-entry" />
+                    </div>
+                </li>
+                <?php if ($this->isNewsletterEnabled()): ?>
+                <li class="control">
+                    <div class="input-box">
+                        <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
+                    </div>
+                    <label for="is_subscribed"><?php echo $this->__('Sign Up for Newsletter') ?></label>
+                </li>
+                <?php endif ?>
+            <?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+            <?php if ($_dob->isEnabled()): ?>
+                <li><?php echo $_dob->setDate($this->getFormData()->getDob())->toHtml() ?></li>
+            <?php endif ?>
+            <?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+            <?php if ($_taxvat->isEnabled()): ?>
+                <li><?php echo $_taxvat->setTaxvat($this->getFormData()->getTaxvat())->toHtml() ?></li>
+            <?php endif ?>
+            <?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+            <?php if ($_gender->isEnabled()): ?>
+                <li><?php echo $_gender->setGender($this->getFormData()->getGender())->toHtml() ?></li>
+            <?php endif ?>
+            </ul>
+        </div>
+    <?php if($this->getShowAddressFields()): ?>
+        <div class="fieldset">
+            <input type="hidden" name="create_address" value="1" />
+            <h2 class="legend"><?php echo $this->__('Address Information') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field">
+                        <label for="company"><?php echo $this->__('Company') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="company" id="company" value="<?php echo $this->escapeHtml($this->getFormData()->getCompany()) ?>" title="<?php echo $this->__('Company') ?>" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('company') ?>" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="telephone" class="required"><em>*</em><?php echo $this->__('Telephone') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="telephone" id="telephone" value="<?php echo $this->escapeHtml($this->getFormData()->getTelephone()) ?>" title="<?php echo $this->__('Telephone') ?>" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('telephone') ?>" />
+                        </div>
+                    </div>
+                </li>
+            <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
+                <li class="wide">
+                    <label for="street_1" class="required"><em>*</em><?php echo $this->__('Street Address') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="street[]" value="<?php echo $this->escapeHtml($this->getFormData()->getStreet(1)) ?>" title="<?php echo $this->__('Street Address') ?>" id="street_1" class="input-text <?php echo $_streetValidationClass ?>" />
+                    </div>
+                </li>
+            <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
+            <?php for ($_i = 2, $_n = $this->helper('customer/address')->getStreetLines(); $_i <= $_n; $_i++): ?>
+                <li class="wide">
+                    <div class="input-box">
+                        <input type="text" name="street[]" value="<?php echo $this->escapeHtml($this->getFormData()->getStreet($_i)) ?>" title="<?php echo $this->__('Street Address %s', $_i) ?>" id="street_<?php echo $_i ?>" class="input-text <?php echo $_streetValidationClass ?>" />
+                    </div>
+                </li>
+            <?php endfor; ?>
+                <li class="fields">
+                    <div class="field">
+                        <label for="city" class="required"><em>*</em><?php echo $this->__('City') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="city" value="<?php echo $this->escapeHtml($this->getFormData()->getCity()) ?>" title="<?php echo $this->__('City') ?>" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('city') ?>" id="city" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="region_id" class="required"><em>*</em><?php echo $this->__('State/Province') ?></label>
+                        <div class="input-box">
+                            <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
+                                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                            </select>
+                            <script type="text/javascript">
+                            //<![CDATA[
+                                $('region_id').setAttribute('defaultValue', "<?php echo $this->getFormData()->getRegionId() ?>");
+                            //]]>
+                            </script>
+                            <input type="text" id="region" name="region" value="<?php echo $this->escapeHtml($this->getRegion()) ?>" title="<?php echo $this->__('State/Province') ?>" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('region') ?>" style="display:none;" />
+                        </div>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <label for="zip" class="required"><em>*</em><?php echo $this->__('Zip/Postal Code') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="postcode" value="<?php echo $this->escapeHtml($this->getFormData()->getPostcode()) ?>" title="<?php echo $this->__('Zip/Postal Code') ?>" id="zip" class="input-text validate-zip-international <?php echo $this->helper('customer/address')->getAttributeValidationClass('postcode') ?>" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="country" class="required"><em>*</em><?php echo $this->__('Country') ?></label>
+                        <div class="input-box">
+                            <?php echo $this->getCountryHtmlSelect() ?>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <input type="hidden" name="default_billing" value="1" />
+            <input type="hidden" name="default_shipping" value="1" />
+        </div>
+    <?php endif; ?>
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Login Information') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field">
+                        <label for="password" class="required"><em>*</em><?php echo $this->__('Password') ?></label>
+                        <div class="input-box">
+                            <input type="password" name="password" id="password" title="<?php echo $this->__('Password') ?>" class="input-text required-entry validate-password" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="confirmation" class="required"><em>*</em><?php echo $this->__('Confirm Password') ?></label>
+                        <div class="input-box">
+                            <input type="password" name="confirmation" title="<?php echo $this->__('Confirm Password') ?>" id="confirmation" class="input-text required-entry validate-cpassword" />
+                        </div>
+                    </div>
+                </li>
+                <?php echo $this->getChildHtml('form.additional.info'); ?>
+                <?php echo $this->getChildHtml('persistent.remember.me'); ?>
+            </ul>
+            <?php echo $this->getChildHtml('persistent.remember.me.tooltip'); ?>
+        </div>
+		
+		
+	<?php 
+		$enabled = Mage::getStoreConfig('techinflo/mystoreoption/active');
+		if($enabled):
+		
+		if($value == ''): ?>
+		 <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Mystore Information') ?></h2>
+            <ul class="form-list">
+                <li class="odd-row">	 
+        <label><input type="checkbox" class="input-box1" title="Brand" name="brand" onclick="showMeThree('show-brand-three-box')" /> Brand</label>
+		</li>
+        
+        <div id="show-brand-three-box" style="display:none; margin-left:25px;">
+                   <?php                
+                   // specify the attribute code
+                    $attributeCode = 'brand';
+
+                    // build and filter the product collection
+                    $products = Mage::getResourceModel('catalog/product_collection')
+                            ->addAttributeToFilter($attributeCode, array('notnull' => true))
+                            ->addAttributeToFilter($attributeCode, array('neq' => ''))
+                            ->addAttributeToSelect($attributeCode);
+
+                    // get all distinct attribute values
+                    $usedAttributeValues = array_unique($products->getColumnValues($attributeCode));
+				
+				$productModel = Mage::getModel('catalog/product');
+				$attr = $productModel->getResource()->getAttribute("brand");
+                    
+			if (count($usedAttributeValues)) {
+			
+			foreach($usedAttributeValues as $optionId => $value) { ?>
+                            <li class="even-row">
+                            <label><input type="checkbox" class="input-box1" value="<?php echo $value; ?>" title="<?php echo $attr->getSource()->getOptionText($value); ?>" name="brands[]" /> <?php echo $attr->getSource()->getOptionText($value); ?></label>
+                            </li>                      
+			<?php }		
+		   }  ?>
+        </div>
+               
+     	<li class="even-row">
+        <label><input type="checkbox" class="input-box1" title="Price" name="price" onclick="showMeOne('show-price-one-box')" /> Price</label>
+	    </li>
+        
+        <div id="show-price-one-box" style="display:none; margin-left:25px;">
+            <ul> <li class="even-row">
+           <label>Min: &nbsp;<input type="text" name="prices[]" class="input-box" title="Minimum Price"  /></label>
+            </li>
+            
+            <li class="even-row">
+            <label>Max: <input type="text" name="prices[]" class="input-box" title="Maximum Price"  /></label>
+            </li> 
+            </ul>
+        </div>
+		 <li class="even-row"><label><input  type="checkbox" class="input-box1" title="Category" name="category" onclick="showMeTwo('show-category-two-box')" /> Category</label></li>
+	     <div id="show-category-two-box" style="display:none; margin-left:25px;">
+        <?php $_helper = Mage::helper('catalog/category') ?>
+        <?php $_categories = $_helper->getStoreCategories() ?>
+        <?php $currentCategory = Mage::registry('current_category') ?>
+        <?php if (count($_categories) > 0): ?>
+                <?php foreach($_categories as $_category): ?>
+				<ul>
+                    <li class="even-row">
+					   <label><input class="input-box1" name="categories[]" type="checkbox" value="<?php echo $_category->getId() ?>"> &nbsp;<?php echo $_category->getName() ?></label>
+                        <?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+                        <?php $_subcategories = $_category->getChildrenCategories() ?>
+                        <?php if (count($_subcategories) > 0): ?>
+                        <ul>
+                    <?php foreach($_subcategories as $_subcategory): ?>
+                     <li class="even-row">
+                       <label><?php echo $_subcategory->getName() ?>
+					   &nbsp;<input class="input-box1" type="checkbox" value="<?php echo $_subcategory->getId() ?>"></label> 
+                       <?php $_category = Mage::getModel('catalog/category')->load($_subcategory->getId()) ?>
+                       <?php $_subsubcategories = $_subcategory->getChildrenCategories() ?>
+                       <?php if (count($_subsubcategories) > 0): ?>
+                           <ul>
+                               <?php foreach($_subsubcategories as $_subsubcategory): ?>
+                                  <li class="even-row">
+                                       <label><?php echo $_subsubcategory->getName() ?>&nbsp;
+									   <input class="input-box1" type="checkbox" value="<?php echo $_subsubcategory->getId() ?>"></label> 
+                                   </li>
+                               <?php endforeach; ?>
+                           </ul>
+                       <?php endif; ?>
+
+                       </li>
+                       <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+			 <?php endif; ?>       
+        </div>      
+      </div>  
+     <?php endif; ?>
+	 
+	 <?php if($value != ''): 
+		$name = Mage::getModel('core/cookie')->get('User');
+		$name = " '$name' ";
+		$connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+		$sql = "SELECT `categories` FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		$sql2 = "SELECT `prices` FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		$sql3 = "SELECT `brands` FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		
+		$results = $connection->fetchOne($sql);
+		$results2 = $connection->fetchOne($sql2);
+		$results3 = $connection->fetchOne($sql3);
+		
+		$results_array = array();
+		$results_array2 = array();
+		$results_array3 = array();
+		
+		$category_array = explode(',', $results); 
+		$price_array = explode(',', $results2); 
+		$brand_array = explode(',', $results3); ?>
+		
+		<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+		
+		<?php $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+		$sql = "SELECT * FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		$results = $connection->fetchAll($sql);
+		foreach($results as $result):
+		?>
+		 <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Mystore Information') ?></h2>
+            <ul class="form-list">
+			<li class="odd-row">	 
+				<td><label><input type="checkbox" class="input-box1" title="Brand" name="brand" onclick="showMeThree('show-brand-box')"
+                <?php if($result[brand] == 'on') {echo 'checked' . ' ' . '=' . 'checked';} ?> /> Brand </label></td>
+			</li>
+				
+				<div id="show-brand-box" style="margin-left:25px;">
+						   <?php                
+						   // specify the attribute code
+							$attributeCode = 'brand';
+
+							// build and filter the product collection
+							$products = Mage::getResourceModel('catalog/product_collection')
+									->addAttributeToFilter($attributeCode, array('notnull' => true))
+									->addAttributeToFilter($attributeCode, array('neq' => ''))
+									->addAttributeToSelect($attributeCode);
+
+							// get all distinct attribute values
+							$usedAttributeValues = array_unique($products->getColumnValues($attributeCode));
+							
+					$productModel = Mage::getModel('catalog/product');
+					$attr = $productModel->getResource()->getAttribute("brand");
+		
+					if (count($usedAttributeValues)) {
+					
+					foreach($usedAttributeValues as $optionId => $value) { ?>
+									<li class="even-row">
+									<td><label><input type="checkbox" class="input-box1" value="<?php echo $value; ?>" title="<?php echo $attr->getSource()->getOptionText($value); ?>" name="brands[]"
+									<?php foreach($brand_array as $brand) { if($brand == $value) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> <?php echo $attr->getSource()->getOptionText($value); ?></label></td>
+									</li>                      
+					<?php }		
+				   }  ?>
+				</div>
+
+			<li class="even-row">
+				<td><label><input type="checkbox" class="input-box1" title="Price" name="price" onclick="showMeOne('show-price-box')" 
+					<?php if($result[price] == 'on') {echo 'checked' . ' ' . '=' . 'checked';} ?>		/> Price</label></td>
+			</li>
+				<div id="show-price-box" style="margin-left:25px;">
+					<ul> <td><li class="even-row">
+				   <label>Min: &nbsp;<input type="text" name="prices[]" class="input-box1" title="Minimum Price" name="min" 
+				   value="<?php if($price_array[0]) echo $price_array[0]; ?>" /></label>
+					</li></td>
+					
+					<td> <li class="even-row">
+					<label>Max: <input type="text" name="prices[]" class="input-box1" title="Maximum Price" name="max" 
+					value="<?php if($price_array[1]) echo $price_array[1]; ?>" /></label>
+					</li> </td>
+					</ul>
+				</div>
+				<li class="odd-row">
+				<td><label><input type="checkbox" class="input-box1" title="Category" name="category" onclick="showMeTwo('show-category-box')" 
+				<?php if($result[category] == 'on') {echo 'checked' . ' ' . '=' . 'checked';} ?> /> Category</label></td>
+			</li>
+				<div id="show-category-box" style="margin-left:25px;">
+				<?php $_helper = Mage::helper('catalog/category') ?>
+				<?php $_categories = $_helper->getStoreCategories() ?>
+				<?php $currentCategory = Mage::registry('current_category') ?>
+				<?php if (count($_categories) > 0): ?>
+				<div id="tabs-1">
+					<ul id="tree1">
+						<?php foreach($_categories as $_category): ?>
+							<li class="even-row">
+								<label><input class="input-box1" name="categories[]" type="checkbox" value="<?php echo $_category->getId() ?>" 
+								<?php foreach($category_array as $category) { if($category == $_category->getId()) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> 
+								<?php echo $_category->getName() ?></label>
+								<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+								<?php $_subcategories = $_category->getChildrenCategories() ?>
+								<?php if (count($_subcategories) > 0): ?>
+								<ul>
+										<?php foreach($_subcategories as $_subcategory): ?>
+							   <li class="odd-row">
+							   <label><input class="input-box1" type="checkbox" value="<?php echo $_subcategory->getId() ?>" 
+							   <?php foreach($category_array as $category) { if($category == $_category->getId()) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> 
+							   <?php echo $_subcategory->getName() ?></label>
+							   <?php $_category = Mage::getModel('catalog/category')->load($_subcategory->getId()) ?>
+							   <?php $_subsubcategories = $_subcategory->getChildrenCategories() ?>
+							   <?php if (count($_subsubcategories) > 0): ?>
+								   <ul>
+									   <?php foreach($_subsubcategories as $_subsubcategory): ?>
+										   <li class="odd-row">
+											   <label><input class="input-box1" type="checkbox" value="<?php echo $_subsubcategory->getId() ?>" 
+											   <?php foreach($category_array as $category) { if($category == $_category->getId()) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> 
+											   <?php echo $_subsubcategory->getName() ?></label>
+										   </li>
+									   <?php endforeach; ?>
+								   </ul>
+							   <?php endif; ?>
+
+							   </li>
+							   <?php endforeach; ?>
+									</ul>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<?php endif; ?>        
+			  </div>
+			</div> 
+	  <?php 
+       endforeach;	
+    endif;?>
+  
+<?php endif; ?>  
+	  
+	 
+        <div class="buttons-set">
+            <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+            <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>" class="back-link"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+            <button type="submit" title="<?php echo $this->__('Submit') ?>" class="button"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+        </div>
+        <?php if (Mage::helper('checkout')->isContextCheckout()): ?>
+            <input name="context" type="hidden" value="checkout" />
+        <?php endif; ?>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var dataForm = new VarienForm('form-validate', true);
+        <?php if($this->getShowAddressFields()): ?>
+        new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'zip');
+        <?php endif; ?>
+    //]]>
+    </script>
+
+</div>

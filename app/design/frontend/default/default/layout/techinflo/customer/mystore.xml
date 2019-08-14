@@ -1,0 +1,24 @@
+<layout version="0.1.0">
+	<!--xsl:if(Mage::getStoreConfig('techinflo/mystoreoption/active'))-->
+     <!--Techinflo\Customerpage\controllers\AccountpageController.php-->
+    <customer_accountpage_index translate="label">
+		<reference name="head">
+            <action method="addCss" ifconfig="techinflocookienotice/general/enabled">
+                <stylesheet>css/mystore/prefference.css</stylesheet>
+            </action>
+	    </reference>
+		
+        <label>My Store</label>
+            <reference name="head">
+                    <action method="setTitle"><title>My Store</title></action> <!--Page Title-->
+            </reference>
+        <!-- Mage_Customer -->
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <!--name in config file / Techinflo\Customerpage\Block\Customer.php--> 
+        <block type="techinflo/customer" name="techinflo" before="-" template="techinflo/customer/page.phtml"/>
+	<!--<block type="catalog/product_list" name="catalog.product.list" alias="products_homepage" category_id="7" template="catalog/product/list.phtml"/>-->
+        </reference>	
+    </customer_accountpage_index>  
+	<!--/xsl:if-->
+</layout> 

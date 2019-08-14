@@ -1,0 +1,364 @@
+<?php $_helper = Mage::helper('catalog/category') ?>
+<?php $_categories = $_helper->getStoreCategories() ?>
+<?php $currentCategory = Mage::registry('current_category') ?>
+<!--?php //if($navCssClasses) //echo $navCssClasses; ?-->
+<?php 
+	$enabled = Mage::getStoreConfig('techinflo/mystoreoption/active');
+	if($enabled){
+ 
+       $value = Mage::getModel('core/cookie')->get('User');
+
+       /*Add the category array to be displayed at the top menu*/
+       if(Mage::getSingleton('customer/session')->isLoggedIn()) {
+		
+		$email = Mage::getSingleton('customer/session')->getCustomer()->getemail(); 
+		$email = " '$email' "; 
+		$connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+		$sql = "SELECT `categories` FROM `customer_mystore_prefference` WHERE `customer_email` = $email ORDER BY `id` DESC LIMIT 1;";
+		$results = $connection->fetchOne($sql);
+		$results_array = array();
+		$results_array = explode(',', $results);
+
+		if($results_array != ''){
+?>
+<div class="nav-container">
+<div class="nav">
+<div class="navbar-bg navbar-left"></div>
+<div class="navbar-bg navbar">
+<ul id="nav">
+<?php
+$i=1;
+
+foreach($_categories as $_category):
+if($i<5):
+?>
+<?php $_category_count = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+<?php $_subcategories = $_category_count->getChildrenCategories() ?>
+<?php if (count($_subcategories) > 0): 
+$class='parent';
+else:
+$class='';
+endif; ?>
+
+<?php 
+	    $removed_cat_array = $results_array; 
+
+		if (in_array($_category->getId(), $removed_cat_array)) : ?>
+
+		<li class="level0 nav-<?php echo $i; ?> first level-top <?php echo $class; ?>">
+        <a class="level-top" href="<?php echo $_helper->getCategoryUrl($_category) ?>">
+        <span><?php echo $_category->getName() ?></span>
+        </a>
+
+		<!-- Level 1st Start -->
+		<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+		<?php $_subcategories = $_category->getChildrenCategories() ?>
+		<?php if (count($_subcategories) > 0): ?>
+
+		<ul class="level0">
+		<?php 
+		$j=1;
+		foreach($_subcategories as $_subcategory): ?>
+		
+		<li class="level1 nav-<?php echo $i; ?>-<?php echo $j; ?> <?php if($j==1): echo 'first'; endif; ?>">
+		<a href="<?php echo $_helper->getCategoryUrl($_subcategory) ?>">
+		<span><?php echo $_subcategory->getName() ?></span>
+		</a>
+		<!-- Level 1st End -->
+
+		<!-- Level 2nd Start -->
+		<?php $_category2 = Mage::getModel('catalog/category')->load($_subcategory->getId()) ?>
+		<?php $_subcategories2 = $_category2->getChildrenCategories() ?>
+		<?php if (count($_subcategories2) > 0): ?>
+		<ul class="level1">
+		<?php 
+		$k=1;
+		foreach($_subcategories2 as $_subcategory2): ?>
+		
+		<li class="level2 nav-<?php echo $i; ?>-<?php echo $j; ?>-<?php echo $k; ?> <?php if($k==1): echo 'first'; endif; ?>">
+		<a href="<?php echo $_helper->getCategoryUrl($_subcategory2) ?>">
+		<span><?php echo $_subcategory2->getName() ?></span>
+		</a>
+		</li>
+		<?php
+		$k++;
+		endforeach; ?>
+		</ul>
+		<?php endif; ?>
+		<!-- Level 2nd End -->
+		</li>
+
+		<?php
+		$j++;
+		endforeach; ?>
+		</ul>
+		<?php endif; ?>
+		</li>
+		<?php 
+		$i++;
+		endif;
+		endif;
+		endforeach; ?>
+
+		<!-- MORE Menu Start -->
+
+		<li class="nav-custom-link level0 level-top parent">
+
+		<!--<a class="level-top" href="#"><span>MORE</span></a>-->
+		<ul class="level0">
+
+		<?php
+		$i=1;
+		foreach($_categories as $_category):
+		if($i>4):
+		?>
+		<?php $_category_count = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+		<?php $_subcategories = $_category_count->getChildrenCategories() ?>
+		<?php if (count($_subcategories) > 0): 
+		$class='parent';
+		else:
+		$class='';
+		endif; 
+
+		if (!in_array($_category->getId(), $removed_cat_array)) : ?>
+		
+		<li class="level1 nav-<?php echo $i; ?> first level-top <?php echo $class; ?>">
+		<a class="level-top" href="<?php echo $_helper->getCategoryUrl($_category) ?>">
+		<span><?php echo $_category->getName() ?></span>
+		</a>
+
+		<!-- Level 1st Start -->
+		<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+		<?php $_subcategories = $_category->getChildrenCategories() ?>
+		<?php if (count($_subcategories) > 0): ?>
+		
+		<ul class="level1">
+		<?php 
+		$j=1;
+		foreach($_subcategories as $_subcategory): ?>
+		<li class="level2 nav-<?php echo $i; ?>-<?php echo $j; ?> <?php if($j==1): echo 'first'; endif; ?>">
+		<a href="<?php echo $_helper->getCategoryUrl($_subcategory) ?>">
+		<span><?php echo $_subcategory->getName() ?></span>
+		</a>
+		<!-- Level 1st End -->
+		</li>
+		
+		<?php
+		$j++;
+		endforeach; ?>
+		</ul>
+		<?php endif; ?>
+		</li>
+		<?php 
+		endif;
+		endif;
+		$i++;
+		endforeach; ?>
+		</ul>
+		</li>    
+	<!-- MORE Menu End -->    
+	</ul>
+	</div>
+	<div class="navbar-bg navbar-right"></div>
+	</div>
+	</div> 
+<?php }
+
+else { 	
+ $_menu = $this->getHtml('level-top') ?>
+<?php if($_menu): ?>
+<div class="nav-container">
+    <ul id="nav">
+        <?php echo $_menu ?>
+    </ul>
+</div>
+<?php endif; }
+  
+}
+		else if($value != ''  && !Mage::getSingleton('customer/session')->isLoggedIn()){ 
+		$connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+		$value = " '$value' ";
+		$sql = "SELECT `categories` FROM `guest_mystore_prefference` WHERE `cookie_name` = $value";
+		$results = $connection->fetchOne($sql);	
+		$results_array = array();
+		$results_array = explode(',', $results);  
+		
+if(!($results_array == '')){
+?>
+<div class="nav-container">
+<div class="nav">
+<div class="navbar-bg navbar-left"></div>
+<div class="navbar-bg navbar">
+<ul id="nav">
+<?php
+$i=1;
+
+foreach($_categories as $_category):
+if($i<5):
+?>
+<?php $_category_count = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+<?php $_subcategories = $_category_count->getChildrenCategories() ?>
+<?php if (count($_subcategories) > 0): 
+$class='parent';
+else:
+$class='';
+endif; ?>
+
+<?php 
+	    $removed_cat_array = $results_array; 
+
+		if (in_array($_category->getId(), $removed_cat_array)) : ?>
+
+		<li class="level0 nav-<?php echo $i; ?> first level-top <?php echo $class; ?>">
+        <a class="level-top" href="<?php echo $_helper->getCategoryUrl($_category) ?>">
+        <span><?php echo $_category->getName() ?></span>
+        </a>
+
+		<!-- Level 1st Start -->
+		<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+		<?php $_subcategories = $_category->getChildrenCategories() ?>
+		<?php if (count($_subcategories) > 0): ?>
+
+		<ul class="level0">
+		<?php 
+		$j=1;
+		foreach($_subcategories as $_subcategory): ?>
+		
+		<li class="level1 nav-<?php echo $i; ?>-<?php echo $j; ?> <?php if($j==1): echo 'first'; endif; ?>">
+		<a href="<?php echo $_helper->getCategoryUrl($_subcategory) ?>">
+		<span><?php echo $_subcategory->getName() ?></span>
+		</a>
+		<!-- Level 1st End -->
+
+		<!-- Level 2nd Start -->
+		<?php $_category2 = Mage::getModel('catalog/category')->load($_subcategory->getId()) ?>
+		<?php $_subcategories2 = $_category2->getChildrenCategories() ?>
+		<?php if (count($_subcategories2) > 0): ?>
+		<ul class="level1">
+		<?php 
+		$k=1;
+		foreach($_subcategories2 as $_subcategory2): ?>
+		
+		<li class="level2 nav-<?php echo $i; ?>-<?php echo $j; ?>-<?php echo $k; ?> <?php if($k==1): echo 'first'; endif; ?>">
+		<a href="<?php echo $_helper->getCategoryUrl($_subcategory2) ?>">
+		<span><?php echo $_subcategory2->getName() ?></span>
+		</a>
+		</li>
+		<?php
+		$k++;
+		endforeach; ?>
+		</ul>
+		<?php endif; ?>
+		<!-- Level 2nd End -->
+		</li>
+
+		<?php
+		$j++;
+		endforeach; ?>
+		</ul>
+		<?php endif; ?>
+		</li>
+		<?php 
+		$i++;
+		endif;
+		endif;
+		endforeach; ?>
+
+		<!-- MORE Menu Start -->
+
+		<li class="nav-custom-link level0 level-top parent">
+
+		<!--<a class="level-top" href="#"><span>MORE</span></a>-->
+		<ul class="level0">
+
+		<?php
+		$i=1;
+		foreach($_categories as $_category):
+		if($i>4):
+		?>
+		<?php $_category_count = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+		<?php $_subcategories = $_category_count->getChildrenCategories() ?>
+		<?php if (count($_subcategories) > 0): 
+		$class='parent';
+		else:
+		$class='';
+		endif; 
+
+		if (!in_array($_category->getId(), $removed_cat_array)) : ?>
+		
+		<li class="level1 nav-<?php echo $i; ?> first level-top <?php echo $class; ?>">
+		<a class="level-top" href="<?php echo $_helper->getCategoryUrl($_category) ?>">
+		<span><?php echo $_category->getName() ?></span>
+		</a>
+
+		<!-- Level 1st Start -->
+		<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+		<?php $_subcategories = $_category->getChildrenCategories() ?>
+		<?php if (count($_subcategories) > 0): ?>
+		
+		<ul class="level1">
+		<?php 
+		$j=1;
+		foreach($_subcategories as $_subcategory): ?>
+		<li class="level2 nav-<?php echo $i; ?>-<?php echo $j; ?> <?php if($j==1): echo 'first'; endif; ?>">
+		<a href="<?php echo $_helper->getCategoryUrl($_subcategory) ?>">
+		<span><?php echo $_subcategory->getName() ?></span>
+		</a>
+		<!-- Level 1st End -->
+		</li>
+		
+		<?php
+		$j++;
+		endforeach; ?>
+		</ul>
+		<?php endif; ?>
+		</li>
+		<?php 
+		endif;
+		endif;
+		$i++;
+		endforeach; ?>
+		</ul>
+		</li>    
+	<!-- MORE Menu End -->    
+	</ul>
+	</div>
+	<div class="navbar-bg navbar-right"></div>
+	</div>
+	</div> 
+<?php }
+} 
+
+else { 
+ $_menu = $this->getHtml('level-top') ?>
+<?php if($_menu): ?>
+<div class="nav-container">
+    <ul id="nav">
+        <?php echo $_menu ?>
+    </ul>
+</div>
+<?php endif; } ?>
+
+<?php }
+else { 
+ $_menu = $this->getHtml('level-top') ?>
+<?php if($_menu): ?>
+<div class="nav-container">
+    <ul id="nav">
+        <?php echo $_menu ?>
+    </ul>
+</div>
+<?php endif; } ?>
+
+<!--?php
+$attribute_code = "brand";
+$attribute_details = Mage::getSingleton("eav/config")->getAttribute("catalog_product", $attribute_code);
+$options = $attribute_details->getSource()->getAllOptions(false);
+foreach($options as $option){
+	 $mybrands[] = $option['label'];
+	 $mybrand[] = $option['label'];
+}
+print_r($mybrands);
+?-->
+
+  

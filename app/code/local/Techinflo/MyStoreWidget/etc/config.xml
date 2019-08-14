@@ -18,7 +18,7 @@
 		<layout>
 		  <updates>
 			<mystorewidget>
-			  <file>mystorewidget.xml</file>
+			  <file>techinflo/catalog/mystorewidget.xml</file>
 			</mystorewidget>
 		  </updates>
 		</layout>

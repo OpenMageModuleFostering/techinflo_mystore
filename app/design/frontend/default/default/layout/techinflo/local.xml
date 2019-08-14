@@ -1,0 +1,24 @@
+<layout version="1.0.0">
+    <!--add link to the customer panel-->
+	<!--xsl:if(Mage::getStoreConfig('techinflo/mystoreoption/active'))-->
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="customer">
+                <name>mystore</name>
+                <!--Customer Block/AccountpageController.php-->
+                <path>customer/accountpage/</path>
+                <label>My Store</label>
+            </action>
+        </reference>
+    </customer_account>
+	<!--/xsl:if-->
+	<customer_account_create>
+        <reference name="customer_form_register">
+            <action method="setTemplate"><template>techinflo/customer/form/register.phtml</template></action>
+            <block type="persistent/form_remember" name="persistent.remember.me" template="persistent/remember_me.phtml" />
+            <block type="core/template" name="persistent.remember.me.tooltip" template="persistent/remember_me_tooltip.phtml" />
+        </reference>
+    </customer_account_create>
+</layout>
+
+

@@ -1,0 +1,345 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @see Mage_Page_Block_Template_Links
+ */
+$value = Mage::getModel('core/cookie')->get('User');
+?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/mystore/lightbox-form.js');?>" alt=""/></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/mystore/prefference.js');?>" alt=""/></script>
+<link href="<?php echo $this->getSkinUrl('css/mystore/lightbox-form.css');?>" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo $this->getSkinUrl('css/mystore/prefference.css');?>" rel="stylesheet" type="text/css" media="all" />
+<?php $_links = $this->getLinks(); ?>
+<?php if(count($_links)>0):  ?>
+    <div>
+        <ul class="links"<?php if($this->getName()): ?> id="<?php echo $this->getName() ?>"<?php endif;?>>
+       
+        <!-- Mystore Top link -->
+		<?php 
+		$enabled = Mage::getStoreConfig('techinflo/mystoreoption/active');
+		if($enabled):
+		if (!Mage::getSingleton('customer/session')->isLoggedIn()){
+		if($value == '') { ?>
+        <li class="level0 nav-98 parent <?php if (strpos(Mage::helper('core/url')->getCurrentUrl(),'mystore') != false ) :?> active<?php endif;?>">
+        <div class="main-content"><a href="#" class="topopup" onClick="openbox('<h4>Set Store Prefferences</h4>', 0)"><?php echo $this->__('My Preferences')  ?></a>
+	    </div>
+       </li>
+	   <?php } 
+	   
+	    else { ?>
+        <li class="level0 nav-98 parent <?php if (strpos(Mage::helper('core/url')->getCurrentUrl(),'mystore') != false ) :?> active<?php endif;?>">
+        <div class="main-content"><a href="#" class="topopup"><?php echo $this->__('My Preferences')  ?></a>
+	    </div>
+       </li>
+	   <?php }
+	   }
+	   endif; ?>
+        <!-- Mystore Top link  -->
+       
+            <?php foreach($_links as $_link): ?>
+                <li <?php if($_link->getIsLast()): ?> class="last"<?php endif; ?><?php echo $_link->getLiParams() ?>><?php echo $_link->getBeforeText() ?><a href="<?php echo $_link->getUrl() ?>" title="<?php echo $_link->getTitle() ?>" <?php echo $_link->getAParams() ?>><?php echo $_link->getLabel() ?></a><?php echo $_link->getAfterText() ?></li>
+            <?php endforeach; ?>
+        </ul>
+   </div>
+<?php endif; ?>
+  
+<?php $value = Mage::getModel('core/cookie')->get('User');  if(!isset($_COOKIE[$value])){		
+?>
+  
+   <div id="shadowing"></div>
+		<div id="box">
+		  <span id="boxtitle"></span>
+		  <a href="#" id="close-button" onClick="closebox()"><img src="Images/b1.jpg" alt="X"></a>
+		
+		<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+		<form id="mainform" class="prefference-save" action="<?php echo Mage::helper("adminhtml")->getUrl("mystoreoption/index/guestprefference"); ?>" method="POST">
+
+		<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<?php Mage::log(Mage::getSingleton('core/session')->getFormKey(), null, ‘layout.log’ );?>
+					
+			<h4><?php echo $this->__('Please select your store preferences and save below') ?> </h4><br>
+
+			<ul>
+			<li class="odd-row">	 
+				<td><label><input type="checkbox" class="input-box" title="Brand" name="brand" onclick="showMeThree('show-brand-box')" /> Brand </label></td>
+			</li>
+				
+				<div id="show-brand-box" style="display:none; margin-left:25px;">
+						   <?php                
+						   // specify the attribute code
+							$attributeCode = 'brand';
+
+							// build and filter the product collection
+							$products = Mage::getResourceModel('catalog/product_collection')
+									->addAttributeToFilter($attributeCode, array('notnull' => true))
+									->addAttributeToFilter($attributeCode, array('neq' => ''))
+									->addAttributeToSelect($attributeCode);
+
+							// get all distinct attribute values
+							$usedAttributeValues = array_unique($products->getColumnValues($attributeCode));
+							
+							$productModel = Mage::getModel('catalog/product');
+							$attr = $productModel->getResource()->getAttribute("brand");
+							
+					if (count($usedAttributeValues)) {
+					
+					foreach($usedAttributeValues as $optionId => $value) { ?>
+									<li class="even-row">
+									<td><label><input type="checkbox" class="input-box" value="<?php echo $value; ?>" title="<?php echo $attr->getSource()->getOptionText($value); ?>" name="brands[]" /> <?php echo $attr->getSource()->getOptionText($value); ?></label></td>
+									</li>                      
+					<?php }		
+				   }  ?>
+				</div>
+
+			<li class="even-row">
+				<td><label><input type="checkbox" class="input-box" title="Price" name="price" onclick="showMeOne('show-price-box')" /> Price</label></td>
+			</li>
+				
+				<div id="show-price-box" style="display:none; margin-left:25px;">
+					<ul> <td><li class="even-row">
+				   <label>Min: &nbsp;<input type="text" name="prices[]" class="input-box" title="Minimum Price" name="min" /></label>
+					</li></td>
+					
+					<td> <li class="even-row">
+					<label>Max: <input type="text" name="prices[]" class="input-box" title="Maximum Price" name="max" /></label>
+					</li> </td>
+					</ul>
+				</div>
+				
+				<li class="odd-row">
+				<td><label><input type="checkbox" class="input-box" title="Category" name="category" onclick="showMeTwo('show-category-box')" /> Category</label></td>
+			</li>
+			
+				<div id="show-category-box" style="display:none; margin-left:25px;">
+				<?php $_helper = Mage::helper('catalog/category') ?>
+				<?php $_categories = $_helper->getStoreCategories() ?>
+				<?php $currentCategory = Mage::registry('current_category') ?>
+				<?php if (count($_categories) > 0): ?>
+				<div id="tabs-1">
+					<ul id="tree1">
+						<?php foreach($_categories as $_category): ?>
+							<li class="odd-row">
+								<input class="input-box" name="categories[]" type="checkbox" value="<?php echo $_category->getId() ?>"> <label><?php echo $_category->getName() ?></label>
+								<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+								<?php $_subcategories = $_category->getChildrenCategories() ?>
+								<?php if (count($_subcategories) > 0): ?>
+								<ul>
+										<?php foreach($_subcategories as $_subcategory): ?>
+							   <li class="odd-row">
+							   <input class="input-box" type="checkbox" value="<?php echo $_subcategory->getId() ?>"> <label><?php echo $_subcategory->getName() ?></label>
+							   <?php $_category = Mage::getModel('catalog/category')->load($_subcategory->getId()) ?>
+							   <?php $_subsubcategories = $_subcategory->getChildrenCategories() ?>
+							   <?php if (count($_subsubcategories) > 0): ?>
+								   <ul>
+									   <?php foreach($_subsubcategories as $_subsubcategory): ?>
+										   <li class="odd-row">
+											   <input class="input-box" type="checkbox" value="<?php echo $_subsubcategory->getId() ?>"> <label><?php echo $_subsubcategory->getName() ?></label>
+										   </li>
+									   <?php endforeach; ?>
+								   </ul>
+							   <?php endif; ?>
+
+							   </li>
+							   <?php endforeach; ?>
+									</ul>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<?php endif; ?>        
+			  </div>  
+				  
+				<li class="even-row">
+				<td><label><input type="hidden" class="input-box" title="flag" name="flag" checked="checked" /></label></td>
+			</li>
+			   
+			<li class="form-submit-button">
+				<td><input type="submit" value="Save" title="Save" /></td> 
+				<td><input type="reset" value="Cancel" title="Cancel" onClick="closebox()" name="reset" /></td>
+			</li>
+			</ul>
+		</form> 
+	</div>
+<?php } else { 
+
+		$name = Mage::getModel('core/cookie')->get('User');
+		$name = " '$name' ";
+		$connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+		$sql = "SELECT `categories` FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		$sql2 = "SELECT `prices` FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		$sql3 = "SELECT `brands` FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		
+		$results = $connection->fetchOne($sql);
+		$results2 = $connection->fetchOne($sql2);
+		$results3 = $connection->fetchOne($sql3);
+		
+		$results_array = array();
+		$results_array2 = array();
+		$results_array3 = array();
+		
+		$category_array = explode(',', $results); 
+		$price_array = explode(',', $results2); 
+		$brand_array = explode(',', $results3); 	  
+?>
+	   <div id="shadowing"></div>
+		<div id="box">
+		  <span id="boxtitle"></span>
+		  <a href="#" id="close-button" onClick="closebox()"><img src="Images/b1.jpg" alt="X"></a>
+		
+		<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+		
+		
+		<?php $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+		$sql = "SELECT * FROM `guest_mystore_prefference` WHERE `cookie_name` = $name ORDER BY `id` DESC LIMIT 1";
+		$results = $connection->fetchAll($sql);
+		foreach($results as $result) {
+		?>
+
+		<form id="mainform" class="prefference-save" action="<?php echo Mage::helper("adminhtml")->getUrl("mystoreoption/index/guestprefference"); ?>" method="POST">
+		<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<?php Mage::log(Mage::getSingleton('core/session')->getFormKey(), null, ‘layout.log’ );?>		
+			<h4><?php echo $this->__('Please select your store preferences and save below') ?> </h4><br>
+			<ul>
+			<li class="odd-row">	 
+				<td><label><input type="checkbox" class="input-box" title="Brand" name="brand" onclick="showMeThree('show-brand-box')"
+                <?php if($result[brand] == 'on') {echo 'checked' . ' ' . '=' . 'checked';} ?> /> Brand </label></td>
+			</li>
+				
+				<div id="show-brand-box" style="margin-left:25px;">
+						   <?php                
+						   // specify the attribute code
+							$attributeCode = 'brand';
+
+							// build and filter the product collection
+							$products = Mage::getResourceModel('catalog/product_collection')
+									->addAttributeToFilter($attributeCode, array('notnull' => true))
+									->addAttributeToFilter($attributeCode, array('neq' => ''))
+									->addAttributeToSelect($attributeCode);
+
+							// get all distinct attribute values
+							$usedAttributeValues = array_unique($products->getColumnValues($attributeCode));
+					
+					$productModel = Mage::getModel('catalog/product');
+					$attr = $productModel->getResource()->getAttribute("brand");
+							
+					if (count($usedAttributeValues)) {
+					
+					foreach($usedAttributeValues as $optionId => $value) { ?>
+									<li class="even-row">
+									<td><label><input type="checkbox" class="input-box" value="<?php echo $value; ?>" title="<?php echo $attr->getSource()->getOptionText($value); ?>" name="brands[]"
+									<?php foreach($brand_array as $brand) { if($brand == $value) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> <?php echo $attr->getSource()->getOptionText($value); ?></label></td>
+									</li>                      
+					<?php }		
+				   }  ?>
+				</div>
+
+			<li class="even-row">
+				<td><label><input type="checkbox" class="input-box" title="Price" name="price" onclick="showMeOne('show-price-box')" 
+					<?php if($result[price] == 'on') {echo 'checked' . ' ' . '=' . 'checked';} ?>		/> Price</label></td>
+			</li>
+				<div id="show-price-box" style="margin-left:25px;">
+					<ul> <td><li class="even-row">
+				   <label>Min: &nbsp;<input type="text" name="prices[]" class="input-box" title="Minimum Price" name="min" 
+				   value="<?php if($price_array[0]) echo $price_array[0]; ?>" /></label>
+					</li></td>
+					
+					<td> <li class="even-row">
+					<label>Max: <input type="text" name="prices[]" class="input-box" title="Maximum Price" name="max" 
+					value="<?php if($price_array[1]) echo $price_array[1]; ?>" /></label>
+					</li> </td>
+					</ul>
+				</div>
+				<li class="odd-row">
+				<td><label><input type="checkbox" class="input-box" title="Category" name="category" onclick="showMeTwo('show-category-box')" 
+				<?php if($result[category] == 'on') {echo 'checked' . ' ' . '=' . 'checked';} ?> /> Category</label></td>
+			</li>
+				<div id="show-category-box" style="margin-left:25px;">
+				<?php $_helper = Mage::helper('catalog/category') ?>
+				<?php $_categories = $_helper->getStoreCategories() ?>
+				<?php $currentCategory = Mage::registry('current_category') ?>
+				<?php if (count($_categories) > 0): ?>
+				<div id="tabs-1">
+					<ul id="tree1">
+						<?php foreach($_categories as $_category): ?>
+							<li class="odd-row">
+								<input class="input-box" name="categories[]" type="checkbox" value="<?php echo $_category->getId() ?>" 
+								<?php foreach($category_array as $category) { if($category == $_category->getId()) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> 
+								<label><?php echo $_category->getName() ?></label>
+								<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+								<?php $_subcategories = $_category->getChildrenCategories() ?>
+								<?php if (count($_subcategories) > 0): ?>
+								<ul>
+										<?php foreach($_subcategories as $_subcategory): ?>
+							   <li class="odd-row">
+							   <input class="input-box" type="checkbox" value="<?php echo $_subcategory->getId() ?>" 
+							   <?php foreach($category_array as $category) { if($category == $_category->getId()) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> 
+							   <label><?php echo $_subcategory->getName() ?></label>
+							   <?php $_category = Mage::getModel('catalog/category')->load($_subcategory->getId()) ?>
+							   <?php $_subsubcategories = $_subcategory->getChildrenCategories() ?>
+							   <?php if (count($_subsubcategories) > 0): ?>
+								   <ul>
+									   <?php foreach($_subsubcategories as $_subsubcategory): ?>
+										   <li class="odd-row">
+											   <input class="input-box" type="checkbox" value="<?php echo $_subsubcategory->getId() ?>" 
+											   <?php foreach($category_array as $category) { if($category == $_category->getId()) echo 'checked' . ' ' . '=' . 'checked'; }  ?> /> 
+											   <label><?php echo $_subsubcategory->getName() ?></label>
+										   </li>
+									   <?php endforeach; ?>
+								   </ul>
+							   <?php endif; ?>
+
+							   </li>
+							   <?php endforeach; ?>
+									</ul>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<?php endif; ?>        
+			  </div>  
+				  
+				<li class="even-row">
+				<td><label><input type="hidden" class="input-box" title="flag" name="flag" checked="checked" /></label></td>
+			</li>
+			   
+			<li class="form-submit-button">
+				<td><input type="submit" value="Save" title="Save" /></td> 
+				<td><input type="reset" value="Cancel" title="Cancel" onClick="closebox()" name="reset" /></td>
+			</li>
+			</ul>
+		</form> 
+	</div>
+	
+<?php 
+	}
+}
+ ?>

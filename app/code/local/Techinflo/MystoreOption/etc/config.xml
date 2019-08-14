@@ -46,7 +46,7 @@
 	   <layout>
             <updates>
                 <mystoreoption>
-                    <file>mystoreoption.xml</file>
+                    <file>techinflo/local.xml</file>
                 </mystoreoption>
             </updates>
         </layout>

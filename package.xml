@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>Techinflo_Mystore</name>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <stability>stable</stability>
     <license uri="http://opensource.org/licenses/osl-3.0.php">Open Software License</license>
     <channel>community</channel>
@@ -17,13 +17,11 @@ user will see only he/his preferred range of products.&lt;/p&gt;&#xD;
 &#xD;
 2. User can set their product preferences based on the following terms.&#xD;
 &#xD;
-- Based on product categories like Men, Women, Kid etc&#xD;
-- Color ranges,&#xD;
-- Price ranges,&#xD;
-- Manufacturer ranges,&#xD;
-- Newly arrived ranges,&#xD;
-- Weight ranges,&#xD;
-- Out of stock&#xD;
+Based on &#xD;
+- Categories like Men, Women, Kid etc&#xD;
+- Price ranges&#xD;
+- Brand ranges&#xD;
+&#xD;
 &#xD;
 3. Saving the user preferences and showing the same preference ranged products on revisits.&#xD;
 &#xD;
@@ -40,24 +38,31 @@ user will see only he/his preferred range of products.&lt;/p&gt;&#xD;
 &#xD;
 2. User can set their product preferences based on the following terms.&#xD;
 &#xD;
-- Based on product categories like Men, Women, Kid etc&#xD;
-- Color ranges,&#xD;
-- Price ranges,&#xD;
-- Manufacturer ranges,&#xD;
-- Newly arrived ranges,&#xD;
-- Weight ranges,&#xD;
-- Out of stock&#xD;
+Based on &#xD;
+- Categories like Men, Women, Kid etc&#xD;
+- Price ranges&#xD;
+- Brand ranges&#xD;
+&#xD;
 &#xD;
 3. Saving the user preferences and showing the same preference ranged products on revisits.&#xD;
 &#xD;
 4. Allowing the user to set preferences and filter the products of their preference.&#xD;
 &#xD;
 5. User is able to change or update his preferences periodically.&#xD;
-</notes>
+&#xD;
+&#xD;
+&lt;strong&gt;Set Up Information&lt;/strong&gt;&#xD;
+&lt;br/&gt;&lt;br/&gt;&#xD;
+&lt;p&gt;1. Please ensure that the store is having atleast one product associated with atleast one category under the root category.&lt;/p&gt;&#xD;
+&lt;br/&gt;&#xD;
+&lt;p&gt;2. Ensure that the brand dropdown attribute is created for the products with  attribute code 'brand'. and give appropriate options for it.&lt;/p&gt;&#xD;
+&lt;br/&gt;&#xD;
+&lt;p&gt;3. Associate the brand name with each product. &lt;/p&gt;&#xD;
+&lt;br/&gt;</notes>
     <authors><author><name>Techinflo</name><user>Techinflo</user><email>anil.gupta@techinflo.com</email></author></authors>
-    <date>2014-02-07</date>
-    <time>06:04:25</time>
-    <contents><target name="magelocal"><dir name="Techinflo"><dir name="Mystore"><dir name="Block"><dir name="Customer"><dir name="Account"><file name="Customer.php" hash="cfaedd1671fece5703e0e0cad0dbc877"/><file name="Lists.php" hash="9434978ca01408f825f90dbf1355d881"/></dir></dir><file name="Customer.php" hash="cfaedd1671fece5703e0e0cad0dbc877"/></dir><dir name="Helper"><file name="Data.php" hash="5d8918a8a1805d1f6449e49da0fd93aa"/></dir><dir name="Model"><dir name="Resource"><file name="Setup.php" hash="26218eed501c862169b31a5b4fb6dad4"/></dir></dir><dir name="controllers"><file name="AccountpageController.php" hash="16a5d7ccc5d8a33e7a7ae4f731e58f3b"/><file name="IndexController.php" hash="185b67e1ce32c43bce80031a6b5ca631"/><file name="new  2.txt" hash="c57bcc691f38a0cb749848e973f7f1e3"/></dir><dir name="etc"><file name="config.xml" hash="f26dee04767827cd2dc54809e8dcb3ea"/></dir><dir name="sql"><dir name="techinflo_mystore_setup"><file name="install-0.0.1.php" hash="cb7cd771efe5474053a2bba7b5ce46d4"/></dir></dir></dir><dir name="MystoreOption"><dir name="Block"><file name="View.php" hash="c899a057f5b1bc103dd90b8490d70ec3"/><file name="View.php.bak" hash="7ae6dbe3ca73abc61a31d7dc57480942"/></dir><dir name="Model"><dir name="System"><dir name="Config"><dir name="Source"><dir name="Preferencetype"><file name="Values.php" hash="7bcad16584362872371566ad216ea69c"/><file name="Values.php.bak" hash="2fc1dc3ca3fcaad491b78edb1213cbd3"/></dir></dir></dir></dir></dir><dir name="controllers"><file name="AccountController.php" hash="8990a68bf93a3140dd0cb1f71f69381d"/><file name="IndexController.php" hash="d7c654303d3110353be1393216c859aa"/></dir><dir name="etc"><file name="adminhtml.xml" hash="1fb0e377a00beaf8ca80ccfa9da7605d"/><file name="adminhtml.xml.bak" hash="1fb0e377a00beaf8ca80ccfa9da7605d"/><file name="config.xml" hash="bc4048d28dd79302516ef1975fea1895"/><file name="config.xml.bak" hash="f0abb79c228ea62581ba31cf2c05eabb"/><file name="system.xml" hash="6fd802dbb2ac22564b734350fa84d741"/><file name="system.xml.bak" hash="0a6b033f46052ea1fab6e6318cc6981d"/></dir></dir><dir name="MyStoreWidget"><dir name="Block"><file name="Index.php" hash="e5ee942b2cfa08ade37e148360a0a3a2"/><file name="Mystore_Widget.php" hash="b8f716051317e3f7c1f8161568a19409"/></dir><dir name="Helper"><file name="Data.php" hash="2e56db7f8ed9f0f1f11189a8e1953a9e"/></dir><dir name="controllers"><file name="IndexController.php" hash="c2e19b8b52dfba9c45ae4ee07d6e1cb4"/></dir><dir name="etc"><file name="config.xml" hash="39f37c40fb2ac8db4fa0d4adf6c774c3"/><file name="widget.xml" hash="86294639b89da4df4325fa5acbd784fc"/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><dir name="Techinflo"><file name="local.xml" hash=""/><file name="page.xml" hash=""/><dir name="customer"><file name="mystore.xml" hash=""/></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Techinflo_Mystore.xml" hash="ad841303bb27253a9b1ddab75bd3c2d5"/><file name="Techinflo_MystoreOption.xml" hash="43d4fbccdd30e20b25e854e06e23dedb"/><file name="Techinflo_MyStoreWidget.xml" hash="9084eeed111daefd0620f273f87d2418"/></dir></target><target name="mageskin"><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><dir name="mystore"><file name="lightbox-form.css" hash="2fe2884fb0df9071dda49197cb9d8b5b"/><file name="prefference.css" hash="20db2c610de384fb4348c1f3d9fa7ea7"/></dir></dir><dir name="js"><dir name="mystore"><file name="lightbox-form.js" hash="6936ec37b9cbb574f02e0c81e74de7d7"/><file name="mystore_page.js" hash="740bf6f08e54dc97b3b2d0928302ee75"/><file name="prefference.js" hash="1f0ad7603dd9d4558bf7ab496a8dab1b"/></dir></dir></dir></dir></dir></target></contents>
+    <date>2014-02-10</date>
+    <time>12:54:35</time>
+    <contents><target name="magelocal"><dir><dir name="Techinflo"><dir name="Mystore"><dir name="Block"><dir name="Customer"><dir name="Account"><file name="Customer.php" hash="cfaedd1671fece5703e0e0cad0dbc877"/><file name="Lists.php" hash="9434978ca01408f825f90dbf1355d881"/></dir></dir><file name="Customer.php" hash="cfaedd1671fece5703e0e0cad0dbc877"/></dir><dir name="Helper"><file name="Data.php" hash="5d8918a8a1805d1f6449e49da0fd93aa"/></dir><dir name="Model"><dir name="Resource"><file name="Setup.php" hash="26218eed501c862169b31a5b4fb6dad4"/></dir></dir><dir name="controllers"><file name="AccountpageController.php" hash="16a5d7ccc5d8a33e7a7ae4f731e58f3b"/><file name="IndexController.php" hash="185b67e1ce32c43bce80031a6b5ca631"/></dir><dir name="etc"><file name="config.xml" hash="1c4b0a36a26c49e3381aa1d9586fc4a0"/></dir><dir name="sql"><dir name="techinflo_mystore_setup"><file name="install-0.0.1.php" hash="cb7cd771efe5474053a2bba7b5ce46d4"/></dir></dir></dir><dir name="MystoreOption"><dir name="Block"><file name="View.php" hash="c899a057f5b1bc103dd90b8490d70ec3"/><file name="View.php.bak" hash="7ae6dbe3ca73abc61a31d7dc57480942"/></dir><dir name="Model"><dir name="System"><dir name="Config"><dir name="Source"><dir name="Preferencetype"><file name="Values.php" hash="7bcad16584362872371566ad216ea69c"/><file name="Values.php.bak" hash="2fc1dc3ca3fcaad491b78edb1213cbd3"/></dir></dir></dir></dir></dir><dir name="controllers"><file name="AccountController.php" hash="8990a68bf93a3140dd0cb1f71f69381d"/><file name="IndexController.php" hash="d7c654303d3110353be1393216c859aa"/></dir><dir name="etc"><file name="adminhtml.xml" hash="1fb0e377a00beaf8ca80ccfa9da7605d"/><file name="adminhtml.xml.bak" hash="1fb0e377a00beaf8ca80ccfa9da7605d"/><file name="config.xml" hash="1a0084bd3749ba8162e2bfd500b8cbe5"/><file name="config.xml.bak" hash="f0abb79c228ea62581ba31cf2c05eabb"/><file name="system.xml" hash="6fd802dbb2ac22564b734350fa84d741"/><file name="system.xml.bak" hash="0a6b033f46052ea1fab6e6318cc6981d"/></dir></dir><dir name="MyStoreWidget"><dir name="Block"><file name="Index.php" hash="e5ee942b2cfa08ade37e148360a0a3a2"/><file name="Mystore_Widget.php" hash="b8f716051317e3f7c1f8161568a19409"/></dir><dir name="Helper"><file name="Data.php" hash="2e56db7f8ed9f0f1f11189a8e1953a9e"/></dir><dir name="controllers"><file name="IndexController.php" hash="c2e19b8b52dfba9c45ae4ee07d6e1cb4"/></dir><dir name="etc"><file name="config.xml" hash="ad15773fbf41d214692814e6cb6e54dc"/><file name="widget.xml" hash="86294639b89da4df4325fa5acbd784fc"/></dir></dir></dir><dir name="Mage"><dir name="Mystore"><dir name="Helper"><file name="Data.php" hash="42714e582804a288731a777badd2a37b"/></dir></dir></dir></dir></target><target name="magedesign"><dir><dir name="frontend"><dir name="default"><dir name="default"><dir name="layout"><dir name="techinflo"><dir name="customer"><file name="mystore.xml" hash="16e26e01216691e893afd45a55c2ac9d"/><file name="mystore.xml" hash="16e26e01216691e893afd45a55c2ac9d"/><file name="mystore.xml" hash="16e26e01216691e893afd45a55c2ac9d"/></dir><file name="local.xml" hash="fb5b50653e5e91f8b148d7c11adc80da"/><file name="local.xml" hash="fb5b50653e5e91f8b148d7c11adc80da"/></dir><file name="customer.rar" hash="1f95f97fe83e0a345089b06bb4780593"/><file name="mystorewidget.xml" hash="0c246bd83bd55bae4791168dd05e32b1"/><file name="page.xml" hash="0a17d9e2251b267990ba7ca04b2f31bb"/><file name="pay.xml" hash="13f46127bc4b1075bc4a60baec8e298d"/></dir><dir name="template"><dir name="catalog"><dir name="product"><dir name="list"><file name="toolbar.phtml" hash="3f50b99e12ec8eb2efa82eca7c878aed"/></dir><file name="list.phtml" hash="a6f01ea1f08dcb3fc7307d6f6489ea16"/><file name="list_dummy.phtml" hash="99538ac98fbac5717934db5b25745e31"/></dir></dir><dir name="techinflo"><dir name="customer"><dir name="form"><file name="register.phtml" hash="0a49a4cf59d783a1b10a69da18607d4c"/><file name="register.phtml" hash="0a49a4cf59d783a1b10a69da18607d4c"/></dir><file name="page.phtml" hash="3d5735571b847c28d6a776e0bd39d93c"/><file name="page.phtml" hash="3d5735571b847c28d6a776e0bd39d93c"/></dir><dir name="page"><dir name="html"><file name="header.phtml" hash="2ccfbd3f83de196b2b354b5eff4737d5"/><file name="topmenu.phtml" hash="d31162dc82f9ea08ff694d127ce63420"/><file name="topmenu_dummy.phtml" hash="674e58eaa6cb427b2555b3c33898893c"/></dir><dir name="template"><file name="links.phtml" hash="3a6aee9f8e942ca132223daef2368899"/></dir></dir></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir><dir name="modules"><file name="Techinflo_Mystore.xml" hash="ad841303bb27253a9b1ddab75bd3c2d5"/><file name="Techinflo_MystoreOption.xml" hash="43d4fbccdd30e20b25e854e06e23dedb"/><file name="Techinflo_MyStoreWidget.xml" hash="9084eeed111daefd0620f273f87d2418"/></dir></dir></target><target name="mageskin"><dir><dir name="frontend"><dir name="default"><dir name="default"><dir name="css"><dir name="mystore"><file name="lightbox-form.css" hash="2fe2884fb0df9071dda49197cb9d8b5b"/><file name="prefference.css" hash="20db2c610de384fb4348c1f3d9fa7ea7"/></dir></dir><dir name="js"><dir name="mystore"><file name="lightbox-form.js" hash="6936ec37b9cbb574f02e0c81e74de7d7"/><file name="mystore_page.js" hash="740bf6f08e54dc97b3b2d0928302ee75"/><file name="prefference.js" hash="1f0ad7603dd9d4558bf7ab496a8dab1b"/></dir></dir></dir></dir></dir></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.1.0</min><max>6.1.0</max></php></required></dependencies>
 </package>
